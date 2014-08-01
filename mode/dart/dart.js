@@ -164,7 +164,6 @@ CodeMirror.defineMode("dart", function(config, parserConfig) {
     }
     else if (ch == '@'){
       stream.eatWhile(/[\w\$_]/)
-      //TODO: new metadata token type
       return ret("tag", "tag");
     }
     else {      
@@ -217,7 +216,6 @@ CodeMirror.defineMode("dart", function(config, parserConfig) {
     var ch = stream.next(); // eat the $
     if (!(ch = stream.peek())) {
       state.tokenize = dartTokenString;
-      //TODO(pquitslund): migrate to string-2
       return ret("variable", "variable");
     }
     else if (ch == '{') {
@@ -226,21 +224,18 @@ CodeMirror.defineMode("dart", function(config, parserConfig) {
     }
     stream.eatWhile(/[\w_]/);
     state.tokenize = dartTokenString;
-    //TODO(pquitslund): migrate to string-2
     return ret("variable", "variable");
   }
 
   function dartTokenStringInterp(stream, state) {
     var ch;
     if (!(ch = stream.peek())) {
-      //TODO(pquitslund): migrate to string-2
       return ret("variable", "variable");
     }
     else if (ch == '}') {
       stream.next(); // eat the }
       if (state.stringState.braceCount == 0) {
         state.tokenize = dartTokenString;
-        //TODO(pquitslund): migrate to string-2
         return ret("variable", "variable");
       }
       state.stringState.braceCount--;
